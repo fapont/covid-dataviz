@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block extra_style %} 
+<!-- Ajouter un fichier css ici -->
+{% endblock %}
+{% block extra_script %} 
+<script src= "{{ url_for('static',filename='js/map.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Ajouter le contenu à afficher -->
+<h1>J'adore les maps</h1>
+
+{% endblock %}
