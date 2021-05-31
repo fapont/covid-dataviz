@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+   print("hello")
+   return render_template('index.html')
+
+
+@app.route('/endpoint')
+def endpoint():
+   return jsonify(username="mokart", email="mokart@mokart.fr", id="1")
 
 
 @app.route('/')
@@ -16,3 +22,8 @@ def showpage(page=None):
    else:
       # called with no parameters 
       return render_template('index.html')
+   
+   
+@app.route('/data/<path:path>')
+def send_data(path):
+    return send_from_directory('data', path)
