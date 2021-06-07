@@ -3,12 +3,42 @@
 
 {% block extra_style %} 
 <!-- Ajouter un fichier css ici -->
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/chart.css') }}">
 {% endblock %}
 {% block extra_script %} 
+<script src = "https://d3js.org/d3.v6.min.js"></script>
 <script src= "{{ url_for('static',filename='js/chart.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 <!-- Ajouter le contenu à afficher -->
-<h1>J'adore les charts</h1>
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <div class="col-2 pposition-fixed bg-light" id="sidebar">
+            <div class="panel panel-primary pt-3" id="result_panel">
+                <div class="panel-heading text-center">
+                    <h4 class="panel-title">Countries list</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group" id="countries">
+                        {% for country in countries %}
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="checkbox" value="{{ country }}" onclick="update()">
+                                {{ country }}
+                            </label>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm align-items-center pt-5">
+            <div class="container-fluid text-center">
+                <h1>Covid-19 deaths by country</h1>
+            </div>
+            <div class="container" id="chart"></div>
+            
+        </div>
+    </div>
+</div>
+
 {% endblock %}

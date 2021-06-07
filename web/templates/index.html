@@ -1,6 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>HELLO</h1>
+<div class="d-flex justify-content-center">
+    <div class="container h-100 m-5 p-5">
+        <div class="row ">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <div class="col">
+                  <div class="card">
+                    <img src="../static/img/no.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Map</h5>
+                      <p class="card-text">Have you ever dreamed of being able to visualize the spread of Covid-19 on an incredible map ? Now it's possible !</p>
+                    </div>
+                    <a href="{{ url_for('showpage', page='map') }}" class="stretched-link"></a>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card">
+                    <img src="../static/img/chart.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Chart</h5>
+                      <p class="card-text">You're convinced that everything can be learned from traditional lineplot ? Go over here !</p>
+                    </div>
+                    <a href="{{ url_for('showpage', page='chart') }}" class="stretched-link"></a>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card">
+                    <img src="../static/img/no.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Race</h5>
+                      <p class="card-text">You're in search of speed and strong feeling ? Take a sit and look at the race of Covid-19 disease.</p>
+                    </div>
+                    <a href="{{ url_for('showpage', page='race') }}" class="stretched-link"></a>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card">
+                    <img src="../static/img/no.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Table</h5>
+                      <p class="card-text">If numbers are your best friend and you're not afraid of a headache go to the table section.</p>
+                    </div>
+                    <a href="{{ url_for('showpage', page='table') }}" class="stretched-link"></a>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
 {% endblock %}
 

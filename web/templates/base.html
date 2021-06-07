@@ -7,7 +7,10 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">        
         {% block extra_style %} {% endblock %}
         {% block extra_script %} {% endblock %}
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src= "{{ url_for('static',filename='js/base.js') }}"></script>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/base.css') }}">
         <title>Dataviz</title>
   </head>
   <body>
@@ -17,16 +20,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ url_for('showpage') }}">Home</a>
+              <a class="nav-link home" aria-current="page" href="{{ url_for('showpage') }}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('showpage', page='map') }}">Map</a>
+              <a class="nav-link map" href="{{ url_for('showpage', page='map') }}">Map</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('showpage', page='chart') }}">Chart</a>
+              <a class="nav-link chart" href="{{ url_for('showpage', page='chart') }}">Chart</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('showpage', page='table') }}">Table</a>
+              <a class="nav-link race" href="{{ url_for('showpage', page='race') }}">Race</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link table" href="{{ url_for('showpage', page='table') }}">Table</a>
             </li>
           </ul>
         </div>
