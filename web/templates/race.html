@@ -68,9 +68,9 @@
     
     
     
-    var tickDuration = 500;
+    var tickDuration = 3000;
     
-    var top_n = 12;
+    var top_n = 10;
     var height = 600;
     var width = 960;
     
@@ -100,7 +100,7 @@
      .style('text-anchor', 'end')
      .html('Source: Covid Data');
 
-     let year = 2020.038462;
+     let year = 2020;
     
   d3.csv('/data/covid_1.csv').then(function(data) {
     //if (error) throw error;
@@ -308,7 +308,7 @@
     
       yearText.html(~~year);
      
-     if(year == 2021.423077) ticker.stop();
+     if(year == 2021.4) ticker.stop();
      year = d3.format('.1f')((+year) + 0.1);
    },tickDuration);
 
