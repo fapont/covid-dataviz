@@ -1,102 +1,38 @@
-function displayMap() {
-    const width = 800, height = 800;
+const colorScale = d3.scaleSequentialSqrt(d3.interpolateYlOrRd);
 
-    const projection = d3.geoOrthographic()
-        .translate([width / 2, height / 2])
-        .clipAngle(90) // sans cette option les pays de l'autre côté du globle sont visibles
-        .precision(.1)
-        .rotate([0,0,0]);
-    
-    const path = d3.geoPath()
-        .projection(projection);
-    
-    const svg = d3.select("#map").append("svg")
-        .attr("id", "world")
-        .attr("width", width)
-        .attr("height", height);
-    
-    const graticule = d3.geoGraticule();
-    svg.append("path")
-        .datum(graticule)
-        .attr("class", "graticule")
-        .attr("d", path);
-    
-    
-    d3.json("/data/world-countries.json").then(function(collection) {
-        var countries = svg.selectAll("path")
-            .data(collection.features)
-            .enter().append("path")
-            .attr("d", path)
-            .attr("class", "country")
-            .attr("id", d => d.id);
-    
-        // Ici vient se placer tout le code de définition de la légende
+// GDP per capita (avoiding countries with small pop)
+const getVal = feat => feat.properties.GDP_MD_EST / Math.max(1e5, feat.properties.POP_EST);
+
+fetch('../../data/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries =>
+{
+  const maxVal = Math.max(...countries.features.map(getVal));
+  colorScale.domain([0, maxVal]);
+
+  const world = Globe()
+    .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+    .backgroundColor('rgba(0,0,0,0)')
+    .lineHoverPrecision(0)
+    .polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
+    .polygonAltitude(0.01)
+    .polygonCapColor(feat => colorScale(getVal(feat)))
+    .polygonSideColor(() => 'rgba(0, 100, 0, 0.15)')
+    .polygonStrokeColor(() => '#111')
+    .polygonLabel(({ properties: d }) => `
+      <b>${d.ADMIN} (${d.ISO_A2}):</b> <br />
+      GDP: <i>${d.GDP_MD_EST}</i> M$<br/>
+      Population: <i>${d.POP_EST}</i>
+    `)
+    .onPolygonHover(hoverD => world
+      .polygonAltitude(d => d === hoverD ? 0.06 : 0.01)
+      .polygonCapColor(d => d === hoverD ? 'steelblue' : colorScale(getVal(d)))
+    )
+    .polygonsTransitionDuration(300)
+  (document.getElementById('globeViz'))
+
+  // Responsive globe
+    window.addEventListener('resize', (event) => {
+        world.width([event.target.innerWidth]);
+        world.height([event.target.innerHeight]);
     });
-    
-    d3.csv("/data/world-temperature.csv").then(function(data) {
-        var quantile = d3.scaleQuantize().domain([
-                d3.min(data, e => +e.temperature),
-                d3.max(data, e => +e.temperature)
-            ]).range(d3.range(60));
-            
-        var legend = svg.append('g')
-            .attr('transform', 'translate(35, 10)')
-            .attr('id', 'legend');
-            
-        legend.selectAll('.colorbar') // LIGNE 11
-            .data(d3.range(60))
-            .enter().append('rect')
-            .attr('y', d => d * 5 + 'px')
-            .attr('height', '5px')
-            .attr('width', '20px')
-            .attr('x', '0px')
-            .attr("class", d => "temperature-" + d);
-        
-        legendScale = d3.scaleLinear()
-            .domain([d3.min(data, e => +e.temperature), d3.max(data, e => +e.temperature)])
-            .range([0, 60 * 5]);
-            
-        svg.append("g")
-            .attr('transform', 'translate(25, 10)')
-            .call(d3.axisLeft(legendScale).ticks(10));
-        
-        data.forEach(function(e,i) {
-            d3.select("#" + e.country) // LIGNE 29
-                .attr("class", e => "country temperature-" + quantile(+e.temperature));
-        });
-    });
-    
-    const λ = d3.scaleLinear()
-        .domain([0, width])
-        .range([-180, 180]);
-    
-    const φ = d3.scaleLinear()
-        .domain([0, height])
-        .range([90, -90]);
-    
-    var drag = d3.drag().subject(function() {
-        var r = projection.rotate();
-        return {
-            x: λ.invert(r[0]),
-            y: φ.invert(r[1])
-        };
-    }).on("drag", function() {
-        projection.rotate([λ(d3.event.x), φ(d3.event.y)]);
-    
-        svg.selectAll(".graticule")
-            .datum(graticule)
-            .attr("d", path);
-        
-        svg.selectAll(".country")
-            .attr("d", path);
-    });
-    
-    svg.call(drag);
-
-}
-
-window.onload = function() {
-    displayMap();
-}
-
+});
 
