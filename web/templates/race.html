@@ -35,7 +35,7 @@
       }
     
       text.yearText{
-        font-size: 64px;
+        font-size: 40px;
         font-weight: 700;
         opacity: 0.25;
       }
@@ -66,9 +66,7 @@
       .attr("width", 1500)
       .attr("height", 600);
     
-    
-    
-    var tickDuration = 2500;
+    var tickDuration = 2800;
     
     var top_n = 10;
     var height = 600;
@@ -100,7 +98,7 @@
      .style('text-anchor', 'end')
      .html('Source: Covid Data');
 
-     let year = 2020.1;
+     let year = 2020.0;
     
   d3.csv('/data/covid_2.csv').then(function(data) {
     //if (error) throw error;
@@ -218,6 +216,7 @@
           .attr('y', d => y(d.rank)+5);
           
        bars
+        .attr('x', x+1)
         .transition()
           .duration(tickDuration)
           .ease(d3.easeLinear)
@@ -317,8 +316,39 @@
             })
           .remove();
     
-      yearText.html(~~year);
-     
+      // yearText.html(year);
+      function testNum(a) {
+        let number = Math.round((a % 1)*10)/10
+        let str_year = '' + ~~year
+        if (number === 0) {
+          result = str_year.concat(' - ', "weeks 1 to 7");
+        } else if (number === 0.1) {
+          result = str_year.concat(' - ', "weeks 7 to 12");
+        } else if (number === 0.2) {
+          result = str_year.concat(' - ', "weeks 12 to 17");
+        } else if (number === 0.3) {
+          result = str_year.concat(' - ', "weeks 17 to 22");
+        } else if (number === 0.4) {
+          result = str_year.concat(' - ', "weeks 22 to 27");
+        } else if (number === 0.5) {
+          result = str_year.concat(' - ', "weeks 27 to 32");
+        } else if (number === 0.6) {
+          result = str_year.concat(' - ', "weeks 32 to 37");
+        } else if (number === 0.7) {
+          result = str_year.concat(' - ', "weeks 37 to 42");
+        } else if (number === 0.8) {
+          result = str_year.concat(' - ', "weeks 42 to 47");
+        } else if (number === 0.9) {
+          result = str_year.concat(' - ', "weeks 47 to 52");
+        } else {
+          result = str_year;
+        }
+        return result;
+      }
+
+      // let date_mois = Math.round((year % 1)*10)/10
+
+      yearText.html(testNum(year));
      if(year == 2021.4) ticker.stop();
      year = d3.format('.1f')((+year) + 0.1);
    },tickDuration);
