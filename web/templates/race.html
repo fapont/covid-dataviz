@@ -63,12 +63,12 @@
 <script>
     // Feel free to change or delete any of the code you see in this editor!
     var svg = d3.select("body").append("svg")
-      .attr("width", 960)
+      .attr("width", 1500)
       .attr("height", 600);
     
     
     
-    var tickDuration = 3000;
+    var tickDuration = 2500;
     
     var top_n = 10;
     var height = 600;
@@ -100,9 +100,9 @@
      .style('text-anchor', 'end')
      .html('Source: Covid Data');
 
-     let year = 2020;
+     let year = 2020.1;
     
-  d3.csv('/data/covid_1.csv').then(function(data) {
+  d3.csv('/data/covid_2.csv').then(function(data) {
     //if (error) throw error;
       
       console.log(data);
@@ -110,7 +110,6 @@
        data.forEach(d => {
         d.value = +d.value,
         d.lastValue = +d.lastValue,
-        d.value = +d.value,
         d.year = +d.year,
         d.colour = d3.hsl(Math.random()*360,0.75,0.75)
       });
@@ -277,11 +276,17 @@
           .attr('class', 'valueLabel')
           .attr('x', d => x(d.value)+5)
           .attr('y', d => y(top_n+1)+5)
-          .text(d => d3.format(',.0f')(d.lastValue))
+          // .text(d => d3.format(',.0f')(d.lastValue))
           .transition()
             .duration(tickDuration)
             .ease(d3.easeLinear)
-            .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
+            .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
+            .tween("text", function(d) {
+               let i = d3.interpolateRound(d.lastValue, d.value);
+               return function(t) {
+                 this.textContent = d3.format(',')(i(t));
+              };
+            });
             
        valueLabels
           .transition()
@@ -304,6 +309,12 @@
           .ease(d3.easeLinear)
           .attr('x', d => x(d.value)+5)
           .attr('y', d => y(top_n+1)+5)
+          .tween("text", function(d) {
+               let i = d3.interpolateRound(d.lastValue, d.value);
+               return function(t) {
+                 this.textContent = d3.format(',')(i(t));
+              };
+            })
           .remove();
     
       yearText.html(~~year);
