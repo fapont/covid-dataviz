@@ -2,14 +2,46 @@
 
 
 {% block extra_style %} 
-<!-- Ajouter un fichier css ici -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.25/date-1.1.0/r-2.2.9/sc-2.0.4/datatables.min.css"/>
 {% endblock %}
 {% block extra_script %} 
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" defer></script>
 <script src= "{{ url_for('static',filename='js/table.js') }}"></script>
 {% endblock %}
 
+
+
+
+ 
 {% block content %}
 <!-- Ajouter le contenu à afficher -->
-<h1> YOUHOUUUUU les tableaux </h1>
-
+<div class="container">
+    <table id="table" class="display" style="width:100%">
+        <thead>
+            <tr>
+                {% for name in columns %}
+                    <th>{{ name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in data %}
+                <tr>
+                    {% for val in line %}
+                        <td>{{ val }} </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                {% for name in columns %}
+                    <th>{{ name }}</th>
+                {% endfor %}
+            </tr>
+        </tfoot>
+    </table>
+</div>
 {% endblock %}
