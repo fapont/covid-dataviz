@@ -96,11 +96,11 @@
      .attr('x', width)
      .attr('y', height-5)
      .style('text-anchor', 'end')
-     .html('Source: Covid Data');
+     .html('Source: John Hopkins Institute');
 
      let year = 2020.0;
     
-  d3.csv('/data/covid_2.csv').then(function(data) {
+  d3.csv('/data/chartrace.csv').then(function(data) {
     //if (error) throw error;
       
       console.log(data);
