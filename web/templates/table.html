@@ -15,15 +15,15 @@
 {% block content %}
 <!-- Ajouter le contenu à afficher -->
 <br>
-<center>The Data below consists of X entries, one per country and per day, from 24 February 2020 to 14 March 2020.</center>
-<center>The features are the total and daily number of COVID cases and of COVID-related deaths.</center>
+<center>The Data below consists of 3200 entries, one per country and per month, from January of 2020 to June of 2021.</center>
+<center>The features are the daily and total number of COVID cases and deaths.</center>
 <br>
 <div class="container">
     <table id="table" class="display" style="width:100%">
         <thead>
             <tr>
                 {% for name in columns %}
-                    <th>{{ name }}</th>
+                    <th>{{ name.replace("_"," ").title() }}</th>
                 {% endfor %}
             </tr>
         </thead>
@@ -39,7 +39,7 @@
         <tfoot>
             <tr>
                 {% for name in columns %}
-                    <th>{{ name }}</th>
+                    <th>{{ name.replace("_"," ").title() }}</th>
                 {% endfor %}
             </tr>
         </tfoot>
