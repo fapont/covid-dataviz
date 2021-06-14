@@ -11,12 +11,13 @@
 <script src= "{{ url_for('static',filename='js/table.js') }}"></script>
 {% endblock %}
 
-
-
-
  
 {% block content %}
 <!-- Ajouter le contenu à afficher -->
+<br>
+<center>The Data below consists of X entries, one per country and per day, from 24 February 2020 to 14 March 2020.</center>
+<center>The features are the total and daily number of COVID cases and of COVID-related deaths.</center>
+<br>
 <div class="container">
     <table id="table" class="display" style="width:100%">
         <thead>
