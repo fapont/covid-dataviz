@@ -6,15 +6,26 @@
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/map.css') }}">
 {% endblock %}
 {% block extra_script %} 
-<script src = "https://d3js.org/d3.v5.min.js"></script>
-<script src="//unpkg.com/globe.gl"></script>
-<script src= "{{ url_for('static',filename='js/map.js') }}"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
 {% endblock %}
 
 {% block content %}
 <!-- Ajouter le contenu à afficher -->
-<h1>J'adore les maps</h1>
-<div class="container-fluid">
-    <div id="globeViz"></div>
+<div class="dropdown">
+    <button class="dropbtn">Select statistic to display</button>
+    <div class="dropdown-content">
+      <a href="#", onclick="draw('total_cases')">Confirmed cases (total)</a>
+      <a href="#", onclick="draw('total_deaths')">Deaths (total)</a>
+      <a href="#", onclick="draw('people_fully_vaccinated')">Fully vaccinated people</a>
+      <a href="#", onclick="draw('people_vaccinated')" >Vaccinated (at least one dose)</a>
+    </div> 
 </div>
+
+<input type="date" class="calendar" id="start" name="display-date" value="2021-06-21" min="2020-02-24">
+
+<div class="container-fluid">
+    <div id="map"></div>
+</div>
+<script src= "{{ url_for('static',filename='js/map.js') }}"></script>
 {% endblock %}
