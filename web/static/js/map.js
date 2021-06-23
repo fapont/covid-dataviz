@@ -4,7 +4,9 @@ function draw(metric){
     const width = 1800;
     const height = 800;
     const legendCellSize = 20;
-    const toremove = ["Europe", "Asia", "North America", "Africa", "Oceania", "World", "South America", "European Union", "International"];
+    const toremove = ["Europe", "Asia", "North America", "Africa", "Oceania", "World", "South America", "European Union", "International", "Guernsey", "Giblartar"];
+
+    var datetime = '2021-06-21'
 
     if (metric == 'total_deaths'){
         var colors = ['#ffb3b3', '#ff9999', '#ff8080', '#ff6666', '#ff4d4d', '#ff3333', '#ff1a1a', '#ff0000', '#e60000', '#cc0000', '#b30000', '#990000', '#800000', '#660000', '#4d0000', '#330000'];
@@ -23,7 +25,6 @@ function draw(metric){
         var metric_name = 'Vaccinated people (at least one dose)'
         var metric_percent = '% of vaccinated people (at least one dose)';
     }
-    var datetime = '2021-06-21'
 
     d3.select('svg').remove();
     const svg = d3.select('#map').append("svg")
