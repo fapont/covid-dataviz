@@ -1,12 +1,24 @@
-function displayAll(list_countries) {
+function displayAll(list_countries, metric) {
     
+    if (metric == 'total_deaths'){
+        var metric_name = 'Deaths (total)'
+    } else if (metric == 'total_cases'){
+        var metric_name = 'Confirmed cases (total)'
+    } else if (metric == 'people_fully_vaccinated'){
+        var metric_name = 'Fully vaccinated people'
+    } else if (metric == 'people_vaccinated'){
+        var metric_name = 'Vaccinated People (at least one dose)'
+    }
+
+    $(".dropdown").attr("id", metric)
+    $("#doc-title").text("Covid19 - " + metric_name)
+
     var svg = d3.select("#chart").append("svg").attr("width", document.getElementById("chart").clientWidth - 40).attr("height", 500),
         margin = {top: 20, right: 20, bottom: 110, left: 60},
         margin2 = {top: 430, right: 20, bottom: 30, left: 60},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom,
         height2 = +svg.attr("height") - margin2.top - margin2.bottom;
-
 
     var x = d3.scaleTime().range([0, width]),
         x2 = d3.scaleTime().range([0, width]),
@@ -35,12 +47,12 @@ function displayAll(list_countries) {
     // Ligne du graphique
     var line = d3.line()
         .x(function (d) { return x(d.date); })
-        .y(function (d) { return y(+d.total_deaths); });
+        .y(function (d) { return y(+d[metric]); });
 
     // Ligne du sélecteur
     var line2 = d3.line()
         .x(function (d) { return x2(d.date); })
-        .y(function (d) { return y2(+d.total_deaths); });
+        .y(function (d) { return y2(+d[metric]); });
     
     // Use for zooming and brushing -> avoid line to be plot outside the box 
     var clip = svg.append("defs").append("svg:clipPath")
@@ -76,7 +88,7 @@ function displayAll(list_countries) {
           });
 
         x.domain(d3.extent(data, d => d.date));
-        y.domain(d3.extent(data, d => +d.total_deaths));
+        y.domain(d3.extent(data, d => +d[metric]));
         x2.domain(x.domain());
         y2.domain(y.domain());
 
@@ -247,7 +259,7 @@ function displayAll(list_countries) {
 
 }
 
-function update() {
+function update(metric) {
     var selected = [];
     $('#countries input:checked').each(function() {
         selected.push($(this).attr('value'));
@@ -262,7 +274,7 @@ function update() {
 
     $(".list-group-item:has(input:checked)").prependTo("#countries")
     $("svg").remove()
-    displayAll(selected)
+    displayAll(selected, metric)
 }
 
 window.onload = function() {
@@ -272,7 +284,7 @@ window.onload = function() {
         if (countries.includes($(this).val()))
             $(this).prop( "checked", true );
     });
-    update()
+    update('total_cases')
 }
 
 

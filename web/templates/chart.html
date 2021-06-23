@@ -12,6 +12,15 @@
 
 {% block content %}
 <!-- Ajouter le contenu à afficher -->
+<div class="dropdown"> 
+    <button class="dropbtn">Select statistic to display</button>
+    <div class="dropdown-content">
+      <a onclick="update('total_cases')">Confirmed cases (total)</a>
+      <a onclick="update('total_deaths')">Deaths (total)</a>
+      <a onclick="update('people_fully_vaccinated')">Fully vaccinated people</a>
+      <a onclick="update('people_vaccinated')" >Vaccinated (at least one dose)</a>
+    </div> 
+  </div>
 <div class="container-fluid h-100">
     <div class="row h-100">
         <div class="col-2 pposition-fixed bg-light" id="sidebar">
@@ -23,7 +32,7 @@
                     <ul class="list-group" id="countries">
                         {% for country in countries %}
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="checkbox" value="{{ country }}" onclick="update()">
+                                <input class="form-check-input me-1" type="checkbox" value="{{ country }}" onclick="update($('.dropdown').attr('id'))">
                                 {{ country }}
                             </label>
                         {% endfor %}
@@ -33,7 +42,7 @@
         </div>
         <div class="col-sm align-items-center pt-5">
             <div class="container-fluid text-center">
-                <h1>Covid-19 deaths by country</h1>
+                <h1 id="doc-title">Covid-19 deaths by country</h1>
             </div>
             <div class="container" id="chart"></div>
             
