@@ -39,15 +39,16 @@ def showtable():
    data["COVID deaths per million"] = 1000000 * (data["total_deaths"] / data["population"])
    data["COVID deaths per million"] = data["COVID deaths per million"].apply(lambda x: x if pd.isna(x) else int(x))
 
-   selection = ["continent", "location", "date", "year", "month", "new_cases", "new_deaths", "total_cases","total_deaths", "COVID cases per million",
-                "COVID deaths per million", "hosp_patients", "hosp_patients_per_million", "positive_rate",
-                "total_vaccinations",
-                "people_vaccinated", "people_fully_vaccinated", "new_vaccinations",
-                "new_vaccinations_smoothed", "total_vaccinations_per_hundred",
-                "people_vaccinated_per_hundred", "people_fully_vaccinated_per_hundred",
-                "new_vaccinations_smoothed_per_million"]
+   selection = ["continent", "location", "date", "new_cases", "new_deaths", "total_cases","total_deaths", "COVID cases per million",
+                "COVID deaths per million", "people_vaccinated", "people_fully_vaccinated",
+                "people_vaccinated_per_hundred", "people_fully_vaccinated_per_hundred"]
 
    data = data.loc[data['date'].str.endswith("-01")]
+
+   data = data.loc[~data['continent'].isna()]
+   
+   for col in ['people_vaccinated', 'people_fully_vaccinated', 'people_vaccinated_per_hundred', 'people_fully_vaccinated_per_hundred']:
+       data[col] = data[col].fillna(0)
 
    return render_template('table.html', columns=selection, data=data[selection].values)
 
