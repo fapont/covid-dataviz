@@ -8,16 +8,20 @@ function draw(metric){
 
     if (metric == 'total_deaths'){
         var colors = ['#ffb3b3', '#ff9999', '#ff8080', '#ff6666', '#ff4d4d', '#ff3333', '#ff1a1a', '#ff0000', '#e60000', '#cc0000', '#b30000', '#990000', '#800000', '#660000', '#4d0000', '#330000'];
-        var metric_name = 'Deaths (total)'
+        var metric_name = 'Deaths (total)';
+        var metric_percent = '% of deaths (total)';
     } else if (metric == 'total_cases'){
         var colors = ['#fff0b3', '#ffeb99', '#ffe680', '#ffe066', '#ffdb4d', '#ffd633', '#ffd11a', '#ffcc00', '#e6b800', '#cca300', '#b38f00', '#997a00', '#806600', '#665200', '#4d3d00', '#332900'];
-        var metric_name = 'Confirmed cases (total)'
+        var metric_name = 'Confirmed cases (total)';
+        var metric_percent = '% of confirmed cases (total)';
     } else if (metric == 'people_fully_vaccinated'){
         var colors = ['#d4eac7', '#c6e3b5', '#b7dda2', '#a9d68f', '#9bcf7d', '#8cc86a', '#7ec157', '#77be4e', '#70ba45', '#65a83e', '#599537', '#4e8230', '#437029', '#385d22', '#2d4a1c', '#223815'];
-        var metric_name = 'Fully vaccinated people'
+        var metric_name = 'Fully vaccinated people';
+        var metric_percent = '% of fully vaccinated people';
     } else if (metric == 'people_vaccinated'){
         var colors = ['#b3d1ff', '#99c2ff', '#80b3ff', '#66a3ff', '#4d94ff', '#3385ff', '#1a75ff', '#0066ff', '#005ce6', '#0052cc', '#0047b3', '#003d99', '#003380', '#002966', '#001f4d', '#001433'];
-        var metric_name = 'Vaccinated People (at least one dose)'
+        var metric_name = 'Vaccinated people (at least one dose)'
+        var metric_percent = '% of vaccinated people (at least one dose)';
     }
     var datetime = '2021-06-21'
 
@@ -31,7 +35,7 @@ function draw(metric){
     let title = svg.append('text')
         .attr('class', 'title')
         .attr('y', 24)
-        .html(`${metric_name}`);
+        .html(`${metric_percent}`);
 
     const projection = d3.geoNaturalEarth1()
         .scale(1)
@@ -87,8 +91,8 @@ function draw(metric){
             .attr("class", "country")
             .style("fill", "#c0c0c0");
         
-        const min = d3.min(scores, d =>  +d.score),
-            max = d3.max(scores, d =>  +d.score);
+        const min = d3.min(scores, d =>  (+d.score / +d.population) * 100),
+            max = d3.min([d3.max(scores, d =>  (+d.score / +d.population) * 100), 100]);
         var quantile = d3.scaleQuantile().domain([min, max])
             .range(colors);
                 
@@ -98,8 +102,8 @@ function draw(metric){
         scores.forEach(function(e,i) {
             var countryPath = d3.select("#code" + e.code);
             countryPath
-                .attr("scorecolor", quantile(+e.score))
-                .style("fill", quantile(+e.score))
+                .attr("scorecolor", quantile((+e.score / +e.population) * 100))
+                .style("fill", quantile((+e.score / +e.population) * 100))
                 .on("mouseover", function(d) {
                     d3.selectAll(".country")
                         .style("opacity", .5)
@@ -114,7 +118,7 @@ function draw(metric){
                     tooltip.select('#tooltip-score')
                         .text(d3.format(",")(e.score));
                     legend.select("#cursor")
-                        .attr('transform', 'translate(' + (legendCellSize + 5) + ', ' + (getColorIndex(quantile(+e.score)) * legendCellSize) + ')')
+                        .attr('transform', 'translate(' + (legendCellSize + 5) + ', ' + (getColorIndex(quantile((+e.score / +e.population) * 100)) * legendCellSize) + ')')
                         .style("display", null);
                 })
                 .on("mouseout", function(d) {
