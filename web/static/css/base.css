@@ -1,1 +1,8 @@
 /* CSS général */
+
+.navbar {
+    background-image: url("../img/covid-header.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
