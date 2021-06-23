@@ -35,9 +35,9 @@ def showtable():
 
 
    data["COVID cases per million"] = 1000000 * (data["total_cases"] / data["population"])
-   data["COVID cases for per million"] = data["COVID cases for 100 000 people"].apply(lambda x: x if pd.isna(x) else int(x))
-   data["COVID deaths for per million"] = 1000000 * (data["total_deaths"] / data["population"])
-   data["COVID deaths for per million"] = data["COVID deaths for 100 000 people"].apply(lambda x: x if pd.isna(x) else int(x))
+   data["COVID cases per million"] = data["COVID cases per million"].apply(lambda x: x if pd.isna(x) else int(x))
+   data["COVID deaths per million"] = 1000000 * (data["total_deaths"] / data["population"])
+   data["COVID deaths per million"] = data["COVID deaths per million"].apply(lambda x: x if pd.isna(x) else int(x))
 
    selection = ["continent", "location", "date", "year", "month", "new_cases", "new_deaths", "total_cases","total_deaths", "COVID cases per million",
                 "COVID deaths per million", "hosp_patients", "hosp_patients_per_million", "positive_rate",
