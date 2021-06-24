@@ -214,7 +214,7 @@ function draw(metric){
             .style("display", "none");
         
         tooltip.append("polyline")
-            .attr("points","0,0 220,0 220,80 0,80 0,0")
+            .attr("points","0,0 240,0 240,80 0,80 0,0")
             .style("fill", "#222b1d")
             .style("stroke","black")
             .style("opacity","0.9")
@@ -224,7 +224,7 @@ function draw(metric){
         tooltip.append("line")
             .attr("x1", 40)
             .attr("y1", 25)
-            .attr("x2", 160)
+            .attr("x2", 200)
             .attr("y2", 25)
             .style("stroke","#929292")
             .style("stroke-width","0.5")
@@ -236,7 +236,7 @@ function draw(metric){
             .attr("transform", "translate(0, 20)");
         
         text.append("tspan")
-            .attr("x", 110)
+            .attr("x", 120)
             .attr("y", 0)
             .attr("id", "tooltip-country")
             .attr("text-anchor", "middle")
@@ -244,7 +244,7 @@ function draw(metric){
             .style("font-size", "16px");
 
         text.append("tspan")
-            .attr("x", 110)
+            .attr("x", 120)
             .attr("y", 30)
             .attr("text-anchor", "middle")
             .style("fill", "#929292")
@@ -257,21 +257,21 @@ function draw(metric){
         
         if (metric == 'people_fully_vaccinated'){
             text.append("tspan")
-                .attr("x", 110) 
+                .attr("x", 120) 
                 .attr("y", 50)
                 .attr("text-anchor", "middle")
                 .style("fill", "#929292")
                 .text("Fully vaccinated: ");
         } else if (metric == 'people_vaccinated'){
             text.append("tspan")
-                .attr("x", 110)
+                .attr("x", 120)
                 .attr("y", 50)
                 .attr("text-anchor", "middle")
                 .style("fill", "#929292")
                 .text("At least one dose: ");
         } else {
             text.append("tspan")
-                .attr("x", 110)
+                .attr("x", 120)
                 .attr("y", 50)
                 .attr("text-anchor", "middle")
                 .style("fill", "#929292")
