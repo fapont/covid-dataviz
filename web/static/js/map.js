@@ -135,7 +135,7 @@ function draw(metric){
                 .on("mousemove", function(d) {
                     var mouse = d3.mouse(this);
                     if (e.country == 'New Zealand' || e.country == 'New Caledonia' || e.country == 'Papua New Guinea' || e.country == 'Fiji' || e.country == 'Vanuatu' ||  e.country == 'Solomon Islands'){
-                        tooltip.attr("transform", "translate(" + (mouse[0] - 220) + "," + (mouse[1] - 90) + ")");
+                        tooltip.attr("transform", "translate(" + (mouse[0] - 240) + "," + (mouse[1] - 90) + ")");
                     } else {
                         tooltip.attr("transform", "translate(" + mouse[0] + "," + (mouse[1] - 90) + ")");
                     }
