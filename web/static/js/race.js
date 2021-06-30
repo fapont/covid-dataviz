@@ -1,5 +1,11 @@
 function draw(dataset){
-    // Feel free to change or delete any of the code you see in this editor!
+    // Principal function called to draw the Bar chart race
+    // sources code : https://medium.com/analytics-vidhya/building-racing-bar-chart-in-d3js-d89b71cd3439
+    //                https://observablehq.com/@d3/bar-chart-race-explained
+    //                https://bl.ocks.org/jrzief/70f1f8a5d066a286da3a1e699823470f
+
+
+    // Selection of the dataset/metric
     if (dataset == "total_cases"){
         var chosen = "Confirmed Cases (total)"
     } else if (dataset == "total_deaths"){
@@ -14,6 +20,7 @@ function draw(dataset){
       .attr("width", 1500)
       .attr("height", 600);
     
+    // Duration of transitions
     var tickDuration = 2800;
     
     var top_n = 12;
@@ -29,6 +36,7 @@ function draw(dataset){
   
     let barPadding = (height-(margin.bottom+margin.top))/(top_n*5);
       
+    // Define title and subtitle
     let title = svg.append('text')
      .attr('class', 'title')
      .attr('y', 24)
@@ -46,7 +54,7 @@ function draw(dataset){
      .style('text-anchor', 'end')
      .html('Source: John Hopkins Institute');
 
-
+    // First date selected according to the metric
      if (dataset === "people_fully_vaccinated" || dataset === "people_vaccinated"){
           var year = 2020.9
         }
@@ -56,9 +64,8 @@ function draw(dataset){
     }
      
 
-
+    // Loading data
    d3.csv(`/data/chartrace_${dataset}.csv`).then(function(data) {
-    //if (error) throw error;
       
       console.log(data);
       
@@ -71,6 +78,7 @@ function draw(dataset){
 
      console.log(data);
     
+     // Slice allowing the transition and interpolation
      let yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
       .sort((a,b) => b.value - a.value)
       .slice(0, top_n);
@@ -78,7 +86,8 @@ function draw(dataset){
       yearSlice.forEach((d,i) => d.rank = i);
     
      console.log('yearSlice: ', yearSlice)
-  
+
+    // Definition of Axis and position
      let x = d3.scaleLinear()
         .domain([0, d3.max(yearSlice, d => d.value)])
         .range([margin.left, width-margin.right-65]);
@@ -99,7 +108,9 @@ function draw(dataset){
        .call(xAxis)
        .selectAll('.tick line')
        .classed('origin', d => d == 0);
-  
+
+
+      // Definition of bars : position, label, size
      svg.selectAll('rect.bar')
         .data(yearSlice, d => d.name)
         .enter()
@@ -130,6 +141,7 @@ function draw(dataset){
       .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
       .text(d => d3.format(',.0f')(d.lastValue));
 
+    // Adding text Year
     let yearText = svg.append('text')
       .attr('class', 'yearText')
       .attr('x', width-margin.right)
@@ -137,7 +149,8 @@ function draw(dataset){
       .style('text-anchor', 'end')
       .html(~~year)
       .call(halo, 10);
-     
+
+   // Function recall after each tickDuration --> allow the visualisation by modifing each element
    let ticker = d3.interval(e => {
 
       yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
@@ -222,8 +235,6 @@ function draw(dataset){
             .attr('y', d => y(top_n+1)+5)
             .remove();
          
-
-     
        let valueLabels = svg.selectAll('.valueLabel').data(yearSlice, d => d.name);
     
        valueLabels
@@ -303,8 +314,6 @@ function draw(dataset){
         return result;
       }
 
-      // let date_mois = Math.round((year % 1)*10)/10
-
       yearText.html(testNum(year));
      if(year == 2021.4) ticker.stop();
      year = d3.format('.1f')((+year) + 0.1);
@@ -323,4 +332,5 @@ function draw(dataset){
 }   
 }
 
+// call function with initialisaton on "total_cases"
 draw("total_cases");
