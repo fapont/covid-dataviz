@@ -21,8 +21,8 @@ Create a web application that allows multiple views of Covid19 pandemic data.
 - Flask
 
 # Setup
-Pour lancer:
+Launch :
 ```
     $ python run.py
 ```
-Accès: http://127.0.0.1:8000/
+Access: http://127.0.0.1:8000/
